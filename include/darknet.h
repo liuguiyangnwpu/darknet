@@ -8,18 +8,6 @@
 #define SECRET_NUM -1234
 extern int gpu_index;
 
-#ifdef GPU
-    #define BLOCK 512
-
-    #include "cuda_runtime.h"
-    #include "curand.h"
-    #include "cublas_v2.h"
-
-    #ifdef CUDNN
-    #include "cudnn.h"
-    #endif
-#endif
-
 #ifndef __cplusplus
     #ifdef OPENCV
     #include "opencv2/highgui/highgui_c.h"
