@@ -12,7 +12,6 @@
 #include "deconvolutional_layer.h"
 #include "convolutional_layer.h"
 #include "cost_layer.h"
-#include "crnn_layer.h"
 #include "crop_layer.h"
 #include "detection_layer.h"
 #include "dropout_layer.h"
@@ -25,11 +24,9 @@
 #include "parser.h"
 #include "region_layer.h"
 #include "reorg_layer.h"
-#include "rnn_layer.h"
 #include "route_layer.h"
 #include "shortcut_layer.h"
 #include "softmax_layer.h"
-#include "lstm_layer.h"
 #include "utils.h"
 
 typedef struct{
@@ -195,35 +192,6 @@ convolutional_layer parse_convolutional(list *options, size_params params)
     return layer;
 }
 
-layer parse_crnn(list *options, size_params params)
-{
-    int output_filters = option_find_int(options, "output_filters",1);
-    int hidden_filters = option_find_int(options, "hidden_filters",1);
-    char *activation_s = option_find_str(options, "activation", "logistic");
-    ACTIVATION activation = get_activation(activation_s);
-    int batch_normalize = option_find_int_quiet(options, "batch_normalize", 0);
-
-    layer l = make_crnn_layer(params.batch, params.w, params.h, params.c, hidden_filters, output_filters, params.time_steps, activation, batch_normalize);
-
-    l.shortcut = option_find_int_quiet(options, "shortcut", 0);
-
-    return l;
-}
-
-layer parse_rnn(list *options, size_params params)
-{
-    int output = option_find_int(options, "output",1);
-    char *activation_s = option_find_str(options, "activation", "logistic");
-    ACTIVATION activation = get_activation(activation_s);
-    int batch_normalize = option_find_int_quiet(options, "batch_normalize", 0);
-
-    layer l = make_rnn_layer(params.batch, params.inputs, output, params.time_steps, activation, batch_normalize, params.net.adam);
-
-    l.shortcut = option_find_int_quiet(options, "shortcut", 0);
-
-    return l;
-}
-
 layer parse_gru(list *options, size_params params)
 {
     int output = option_find_int(options, "output",1);
@@ -231,16 +199,6 @@ layer parse_gru(list *options, size_params params)
 
     layer l = make_gru_layer(params.batch, params.inputs, output, params.time_steps, batch_normalize, params.net.adam);
     l.tanh = option_find_int_quiet(options, "tanh", 0);
-
-    return l;
-}
-
-layer parse_lstm(list *options, size_params params)
-{
-    int output = option_find_int(options, "output", 1);
-    int batch_normalize = option_find_int_quiet(options, "batch_normalize", 0);
-
-    layer l = make_lstm_layer(params.batch, params.inputs, output, params.time_steps, batch_normalize, params.net.adam);
 
     return l;
 }
@@ -669,14 +627,8 @@ network parse_network_cfg(char *filename)
             l = parse_local(options, params);
         }else if(lt == ACTIVE){
             l = parse_activation(options, params);
-        }else if(lt == RNN){
-            l = parse_rnn(options, params);
         }else if(lt == GRU){
             l = parse_gru(options, params);
-        }else if (lt == LSTM) {
-            l = parse_lstm(options, params);
-        }else if(lt == CRNN){
-            l = parse_crnn(options, params);
         }else if(lt == CONNECTED){
             l = parse_connected(options, params);
         }else if(lt == CROP){

@@ -25,3 +25,8 @@ ehthumbs.db
 Icon?
 Thumbs.db
 *.swp
+backup/
+bad.list
+libdarknet.a
+libdarknet.so
+weights/
