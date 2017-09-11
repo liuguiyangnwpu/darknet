@@ -58,7 +58,7 @@ network load_network(char *cfg, char *weights, int clear)
 
 network *load_network_p(char *cfg, char *weights, int clear)
 {
-    network *net = calloc(1, sizeof(network));
+    network *net = (network*)calloc(1, sizeof(network));
     *net = load_network(cfg, weights, clear);
     return net;
 }
@@ -191,10 +191,10 @@ network make_network(int n)
 {
     network net = {0};
     net.n = n;
-    net.layers = calloc(net.n, sizeof(layer));
-    net.seen = calloc(1, sizeof(size_t));
-    net.t    = calloc(1, sizeof(int));
-    net.cost = calloc(1, sizeof(float));
+    net.layers = (layer*)calloc(net.n, sizeof(layer));
+    net.seen = (size_t*)calloc(1, sizeof(size_t));
+    net.t    = (int*)calloc(1, sizeof(int));
+    net.cost = (float*)calloc(1, sizeof(float));
     return net;
 }
 
@@ -401,8 +401,8 @@ int resize_network(network *net, int w, int h)
     net->output = out.output;
     free(net->input);
     free(net->truth);
-    net->input = calloc(net->inputs*net->batch, sizeof(float));
-    net->truth = calloc(net->truths*net->batch, sizeof(float));
+    net->input = (float*)calloc(net->inputs*net->batch, sizeof(float));
+    net->truth = (float*)calloc(net->truths*net->batch, sizeof(float));
 #ifdef GPU
     if(gpu_index >= 0){
         cuda_free(net->input_gpu);
@@ -416,7 +416,7 @@ int resize_network(network *net, int w, int h)
     }
 #else
     free(net->workspace);
-    net->workspace = calloc(1, workspace_size);
+    net->workspace = (float*)calloc(1, workspace_size);
 #endif
     //fprintf(stderr, " Done!\n");
     return 0;
@@ -431,7 +431,8 @@ detection_layer get_network_detection_layer(network net)
         }
     }
     fprintf(stderr, "Detection layer not found!!\n");
-    detection_layer l = {0};
+    // detection_layer l = {0};
+    detection_layer l;
     return l;
 }
 
@@ -501,7 +502,7 @@ int num_boxes(network *net)
 box *make_boxes(network *net)
 {
     layer l = net->layers[net->n-1];
-    box *boxes = calloc(l.w*l.h*l.n, sizeof(box));
+    box *boxes = (box*)calloc(l.w*l.h*l.n, sizeof(box));
     return boxes;
 }
 
@@ -509,8 +510,8 @@ float **make_probs(network *net)
 {
     int j;
     layer l = net->layers[net->n-1];
-    float **probs = calloc(l.w*l.h*l.n, sizeof(float *));
-    for(j = 0; j < l.w*l.h*l.n; ++j) probs[j] = calloc(l.classes + 1, sizeof(float *));
+    float **probs = (float**)calloc(l.w*l.h*l.n, sizeof(float *));
+    for(j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float*)calloc(l.classes + 1, sizeof(float *));
     return probs;
 }
 
@@ -546,7 +547,7 @@ matrix network_predict_data_multi(network net, data test, int n)
     int i,j,b,m;
     int k = net.outputs;
     matrix pred = make_matrix(test.X.rows, k);
-    float *X = calloc(net.batch*test.X.rows, sizeof(float));
+    float *X = (float*)calloc(net.batch*test.X.rows, sizeof(float));
     for(i = 0; i < test.X.rows; i += net.batch){
         for(b = 0; b < net.batch; ++b){
             if(i+b == test.X.rows) break;
@@ -571,7 +572,7 @@ matrix network_predict_data(network net, data test)
     int i,j,b;
     int k = net.outputs;
     matrix pred = make_matrix(test.X.rows, k);
-    float *X = calloc(net.batch*test.X.cols, sizeof(float));
+    float *X = (float*)calloc(net.batch*test.X.cols, sizeof(float));
     for(i = 0; i < test.X.rows; i += net.batch){
         for(b = 0; b < net.batch; ++b){
             if(i+b == test.X.rows) break;

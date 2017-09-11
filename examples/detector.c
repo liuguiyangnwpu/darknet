@@ -6,9 +6,9 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
     char *name_list = option_find_str(options, "names", "data/names.list");
     char **names = get_labels(name_list);
 
-    image **alphabet = load_alphabet();
+    image **alphabet = NULL;
     network net = parse_network_cfg(cfgfile);
-    if(weightfile){
+    if(weightfile) {
         load_weights(&net, weightfile);
     }
     set_batch_network(&net, 1);
@@ -18,7 +18,7 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
     char *input = buff;
     int j;
     float nms=.3;
-    while(1){
+    while(1) {
         if(filename){
             strncpy(input, filename, 256);
         } else {
@@ -28,17 +28,19 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
             if(!input) return;
             strtok(input, "\n");
         }
-        image im = load_image_color(input,0,0);
+        image im = load_image_color(input, 0, 0);
         image sized = letterbox_image(im, net.w, net.h);
         layer l = net.layers[net.n-1];
 
-        box *boxes = calloc(l.w*l.h*l.n, sizeof(box));
-        float **probs = calloc(l.w*l.h*l.n, sizeof(float *));
-        for(j = 0; j < l.w*l.h*l.n; ++j) probs[j] = calloc(l.classes + 1, sizeof(float *));
+        box *boxes = (box*)calloc(l.w*l.h*l.n, sizeof(box));
+        float **probs = (float**)calloc(l.w*l.h*l.n, sizeof(float *));
+        for(j = 0; j < l.w*l.h*l.n; ++j) 
+            probs[j] = (float*)calloc(l.classes + 1, sizeof(float *));
         float **masks = 0;
         if (l.coords > 4){
-            masks = calloc(l.w*l.h*l.n, sizeof(float*));
-            for(j = 0; j < l.w*l.h*l.n; ++j) masks[j] = calloc(l.coords-4, sizeof(float *));
+            masks = (float**)calloc(l.w*l.h*l.n, sizeof(float*));
+            for(j = 0; j < l.w*l.h*l.n; ++j) 
+                masks[j] = (float*)calloc(l.coords-4, sizeof(float *));
         }
 
         float *X = sized.data;
@@ -49,38 +51,25 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
         if (nms) do_nms_obj(boxes, probs, l.w*l.h*l.n, l.classes, nms);
         //else if (nms) do_nms_sort(boxes, probs, l.w*l.h*l.n, l.classes, nms);
         draw_detections(im, l.w*l.h*l.n, thresh, boxes, probs, masks, names, alphabet, l.classes);
-        if(outfile){
+        if(outfile) {
             save_image(im, outfile);
-        }
-        else{
+        } else {
             save_image(im, "predictions");
-#ifdef OPENCV
-            cvNamedWindow("predictions", CV_WINDOW_NORMAL); 
-            if(fullscreen){
-                cvSetWindowProperty("predictions", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
-            }
-            show_image(im, "predictions");
-            cvWaitKey(0);
-            cvDestroyAllWindows();
-#endif
         }
 
         free_image(im);
         free_image(sized);
         free(boxes);
         free_ptrs((void **)probs, l.w*l.h*l.n);
-        if (filename) break;
+        if (filename) 
+            break;
     }
 }
 
 void run_detector(int argc, char **argv)
 {
-    char *prefix = find_char_arg(argc, argv, "-prefix", 0);
     float thresh = find_float_arg(argc, argv, "-thresh", .24);
     float hier_thresh = find_float_arg(argc, argv, "-hier", .5);
-    int cam_index = find_int_arg(argc, argv, "-c", 0);
-    int frame_skip = find_int_arg(argc, argv, "-s", 0);
-    int avg = find_int_arg(argc, argv, "-avg", 3);
     if(argc < 4){
         fprintf(stderr, "usage: %s %s [train/test/valid] [cfg] [weights (optional)]\n", argv[0], argv[1]);
         return;
@@ -98,7 +87,7 @@ void run_detector(int argc, char **argv)
         for(i = 0; i < len; ++i){
             if (gpu_list[i] == ',') ++ngpus;
         }
-        gpus = calloc(ngpus, sizeof(int));
+        gpus = (int*)calloc(ngpus, sizeof(int));
         for(i = 0; i < ngpus; ++i){
             gpus[i] = atoi(gpu_list);
             gpu_list = strchr(gpu_list, ',')+1;
@@ -109,11 +98,7 @@ void run_detector(int argc, char **argv)
         ngpus = 1;
     }
 
-    int clear = find_arg(argc, argv, "-clear");
     int fullscreen = find_arg(argc, argv, "-fullscreen");
-    int width = find_int_arg(argc, argv, "-w", 0);
-    int height = find_int_arg(argc, argv, "-h", 0);
-    int fps = find_int_arg(argc, argv, "-fps", 0);
 
     char *datacfg = argv[3];
     char *cfg = argv[4];

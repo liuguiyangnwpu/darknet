@@ -1,5 +1,3 @@
 classes= 1
-train  = /home/ai-i-liuguiyang/repos_ssd/darknet/scripts/VOCdevkit/jlfirst/train.txt
-//valid  = /home/pjreddie/data/voc/2007_test.txt
 names = data/jl.names
 backup = /home/ai-i-liuguiyang/repos_ssd/darknet/backup
