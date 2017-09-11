@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package darknet;
+
+message TargetRect {
+	int32  x_min = 1;
+	int32  y_min = 2;
+	int32  x_max = 3;
+	int32  y_max = 4;
+	string label = 5;
+	float  prob  = 6;
+}
+
+message DetectRequest {
+	string req_id     = 1;
+	string video_name = 2;
+	string frame_name = 3;
+}
+
+message DetectResponse {
+	string rsp_id     = 1;
+	float  spend_time = 2;
+	bool   status     = 3;
+	string err        = 4;
+	repeated TargetRect targetlist = 5;
+}
+
+service DetectRpc {
+	rpc Detect(DetectRequest) returns (DetectResponse) {}
+}
