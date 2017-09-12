@@ -1,5 +1,6 @@
 #ifndef DARKNET_API
 #define DARKNET_API
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -608,7 +609,7 @@ void rescale_weights(layer l, float scale, float trans);
 void rgbgr_weights(layer l);
 image *get_weights(layer l);
 
-void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const char *filename, char **names, int classes, int frame_skip, char *prefix, int avg, float hier_thresh, int w, int h, int fps, int fullscreen);
+// void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const char *filename, char **names, int classes, int frame_skip, char *prefix, int avg, float hier_thresh, int w, int h, int fps, int fullscreen);
 void get_detection_boxes(layer l, int w, int h, float thresh, float **probs, box *boxes, int only_objectness);
 
 char *option_find_str(list *l, char *key, char *def);
@@ -689,11 +690,6 @@ void do_nms_obj(box *boxes, float **probs, int total, int classes, float thresh)
 
 matrix make_matrix(int rows, int cols);
 
-#ifndef __cplusplus
-#ifdef OPENCV
-image get_image_from_stream(CvCapture *cap);
-#endif
-#endif
 void free_image(image m);
 float train_network(network net, data d);
 pthread_t load_data_in_thread(load_args args);
@@ -727,5 +723,9 @@ void normalize_array(float *a, int n);
 int *read_intlist(char *s, int *n, int d);
 size_t rand_size_t();
 float rand_normal();
+
+// add by liuguiyang
+void model_start_init(char* labelfile, char* cfgfile, char* weightfile, char **names);
+void test_detector(char *filename, float thresh, float hier_thresh, char **names);
 
 #endif

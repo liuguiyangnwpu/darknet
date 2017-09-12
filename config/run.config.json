@@ -1,0 +1,13 @@
+{
+	"SERVERIP":"127.0.0.1",
+	"PORT":"9999",
+	"LOGPATH":"/root/repos/darknet/run.log",
+	"GPU":"0",
+	"DARKNET": {
+		"THRESH":"0.24",
+		"HIER":"0.5",
+		"LABELPATH":"/root/repos/darknet/config/data/jl.names",
+		"CFGPATH":"/root/repos/darknet/config/cfg/jl.cfg",
+		"WEIGHTPATH":"/root/repos/darknet/weights/jl.weights"
+	}
+}

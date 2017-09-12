@@ -29,3 +29,7 @@ bad.list
 libdarknet.a
 libdarknet.so
 weights/
+.idea/
+bin/
+run.log
+Makefile.bak
