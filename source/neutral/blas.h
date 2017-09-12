@@ -42,6 +42,11 @@ void weighted_delta_cpu(float *a, float *b, float *s, float *da, float *db, floa
 void softmax(float *input, int n, float temp, int stride, float *output);
 void softmax_cpu(float *input, int n, int batch, int batch_offset, int groups, int group_offset, int stride, float temp, float *output);
 
+void axpy_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY);
+void copy_cpu(int N, float *X, int INCX, float *Y, int INCY);
+void scal_cpu(int N, float ALPHA, float *X, int INCX);
+void normalize_cpu(float *x, float *mean, float *variance, int batch, int filters, int spatial);
+
 #ifdef GPU
 #include "cuda.h"
 #include "tree.h"

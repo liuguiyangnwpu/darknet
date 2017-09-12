@@ -45,6 +45,9 @@ image get_convolutional_weight(convolutional_layer layer, int i);
 
 int convolutional_out_height(convolutional_layer layer);
 int convolutional_out_width(convolutional_layer layer);
+void rescale_weights(layer l, float scale, float trans);
+void rgbgr_weights(layer l);
+image *get_weights(layer l);
 
 #endif
 

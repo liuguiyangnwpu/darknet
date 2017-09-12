@@ -12,7 +12,7 @@
 #include <grpc++/grpc++.h>
 #include "darknet.h"
 #include "../utils/log.h"
-#include "../utils/utils.h"
+#include "../utils/lgy_utils.h"
 #include "../rpc/darknet.grpc.pb.h"
 #include "../rpc/darknet.pb.h"
 

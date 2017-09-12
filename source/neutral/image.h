@@ -57,6 +57,39 @@ void add_pixel(image m, int x, int y, int c, float val);
 float bilinear_interpolate(image im, float x, float y, int c);
 
 image get_image_layer(image m, int l);
+int best_3d_shift_r(image a, image b, int min, int max);
+void save_image_png(image im, const char *name);
+void grayscale_image_3c(image im);
+void normalize_image(image p);
+void rgbgr_image(image im);
+image make_random_image(int w, int h, int c);
+image load_image(char *filename, int w, int h, int c);
+image load_image_color(char *filename, int w, int h);
+image make_image(int w, int h, int c);
+image resize_image(image im, int w, int h);
+image letterbox_image(image im, int w, int h);
+image crop_image(image im, int dx, int dy, int w, int h);
+image resize_min(image im, int min);
+image threshold_image(image im, float thresh);
+image mask_to_rgb(image mask);
+void test_resize(char *filename);
+void save_image(image p, const char *name);
+void show_image(image p, const char *name);
+image copy_image(image p);
+void draw_box_width(image a, int x1, int y1, int x2, int y2, int w, float r, float g, float b);
+void free_image(image m);
+void draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, image **alphabet, int classes);
+image **load_alphabet();
+void constrain_image(image im);
+void flip_image(image a);
+image float_to_image(int w, int h, int c, float *data);
+void ghost_image(image source, image dest, int dx, int dy);
+void random_distort_image(image im, float hue, float saturation, float exposure);
+void fill_image(image m, float s);
+image grayscale_image(image im);
+void rotate_image_cw(image im, int times);
+image rotate_image(image m, float rad);
+void composite_3d(char *f1, char *f2, char *out, int delta);
 
 #endif
 

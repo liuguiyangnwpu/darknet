@@ -9,5 +9,6 @@ void list_insert(list *, void *);
 
 
 void free_list_contents(list *l);
+void free_list(list *l);
 
 #endif

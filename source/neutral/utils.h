@@ -43,6 +43,31 @@ float dist_array(float *a, float *b, int n, int sub);
 float **one_hot_encode(float *a, int n, int k);
 float sec(clock_t clocks);
 void print_statistics(float *a, int n);
+float mse_array(float *a, int n);
+float variance_array(float *a, int n);
+float mag_array(float *a, int n);
+float mean_array(float *a, int n);
+void normalize_array(float *a, int n);
+int *read_intlist(char *s, int *n, int d);
+size_t rand_size_t();
+float rand_normal();
+int find_int_arg(int argc, char **argv, char *arg, int def);
+float find_float_arg(int argc, char **argv, char *arg, float def);
+int find_arg(int argc, char* argv[], char *arg);
+char *find_char_arg(int argc, char **argv, char *arg, char *def);
+char *basecfg(char *cfgfile);
+void find_replace(char *str, char *orig, char *rep, char *output);
+void free_ptrs(void **ptrs, int n);
+char *fgetl(FILE *fp);
+void strip(char *s);
+float sec(clock_t clocks);
+void **list_to_array(list *l);
+void top_k(float *a, int n, int k, int *index);
+int *read_map(char *filename);
+void error(const char *s);
+int max_index(float *a, int n);
+int sample_array(float *a, int n);
+double what_time_is_it_now();
 
 #endif
 

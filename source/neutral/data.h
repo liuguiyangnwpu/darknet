@@ -20,6 +20,8 @@ static inline float distance_from_edge(int x, int max)
 }
 void load_data_blocking(load_args args);
 
+void free_data(data d);
+pthread_t load_data(load_args args);
 
 void print_letters(float *pred, int n);
 data load_data_captcha(char **paths, int n, int m, int k, int w, int h);
@@ -46,5 +48,14 @@ void randomize_data(data d);
 data *split_data(data d, int part, int total);
 data concat_datas(data *d, int n);
 void fill_truth(char *path, char **labels, int k, float *truth);
+void get_next_batch(data d, int n, int offset, float *X, float *y);
+data copy_data(data d);
+data concat_data(data d1, data d2);
+data load_cifar10_data(char *filename);
+pthread_t load_data_in_thread(load_args args);
+void load_data_blocking(load_args args);
+list *get_paths(char *filename);
+char **get_labels(char *filename);
+data load_data_old(char **paths, int n, int m, char **labels, int k, int w, int h);
 
 #endif
