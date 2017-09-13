@@ -1,6 +1,7 @@
 {
 	"SERVERIP":"172.17.0.3",
 	"PORT":"9997",
+	"IMAGEDIR":"/root/repos",
 	"LOGPATH":"/root/repos/darknet/run.log",
 	"GPU":"0",
 	"DARKNET": {

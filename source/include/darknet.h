@@ -44,6 +44,6 @@ void harmless_update_network_gpu(network net);
 
 // add by liuguiyang
 void model_start_init(char* labelfile, char* cfgfile, char* weightfile, char **names);
-void test_detector(char *filename, float thresh, float hier_thresh, char **names);
+void detect_single_image(char *filename, float thresh, float hier_thresh, char **names);
 
 #endif

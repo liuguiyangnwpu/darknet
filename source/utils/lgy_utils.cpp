@@ -56,6 +56,7 @@ void read_config_Json(string fileName, map<string, string> &argvMap) {
     argvMap["PORT"] = root.get("PORT", "9999").asString();
     argvMap["LOGPATH"] = root.get("LOGPATH", "NULL").asString();
     argvMap["GPU"] = root.get("GPU", "0").asString();
+    argvMap["IMAGEDIR"] = root.get("IMAGEDIR", "NULL").asString();
 
     if(root.isMember("DARKNET") == true) {
         argvMap["THRESH"] = root["DARKNET"].get("THRESH", "0.24").asString();
