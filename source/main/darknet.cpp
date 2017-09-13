@@ -41,6 +41,7 @@ void handle_big_image(char *filename, map<pair<int, int>, image> &crop_images) {
             crop_images[make_pair(col, row)] = c_img;
         }
     }
+    cout << "Crop Images Num is " << crop_images.size() << endl;
 }
 
 void detect_single_image(char *filename, float thresh, float hier_thresh, char **names) {
@@ -59,7 +60,7 @@ void detect_single_image(char *filename, float thresh, float hier_thresh, char *
         for(int j = 0; j < l.w*l.h*l.n; ++j) 
             probs[j] = (float*)calloc(l.classes + 1, sizeof(float *));
         float **masks = 0;
-        if (l.coords > 4){
+        if (l.coords > 4) {
             masks = (float**)calloc(l.w*l.h*l.n, sizeof(float*));
             for(int j = 0; j < l.w*l.h*l.n; ++j) 
                 masks[j] = (float*)calloc(l.coords-4, sizeof(float *));
