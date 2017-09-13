@@ -1,5 +1,5 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef LGY_UTILS_HPP
+#define LGY_UTILS_HPP
 
 #include <iostream>
 #include <fstream>
@@ -42,5 +42,5 @@ std::vector<std::string> split(const std::string &s, char delim);
 bool createFolder(string path);
 bool checkFilePath(string paths);
 
-#endif // UTILS_HPP
+#endif // LGY_UTILS_HPP
 

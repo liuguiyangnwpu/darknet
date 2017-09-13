@@ -9,6 +9,12 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnarrowing -Wmisleading-indentation -fPIC")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
+include_directories("/usr/local/include")
+include_directories("source/include")
+include_directories("source/neutral")
+LINK_DIRECTORIES("/usr/local/lib")
+
+
 option (USE_GPU "Use GPU nvcc" OFF)
 option (USE_OPENMP "Use openmp" ON)
 option (USE_GRPC "Use grpc" ON)
@@ -16,15 +22,6 @@ option (USE_GRPC "Use grpc" ON)
 if (USE_OPENMP)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 endif(USE_OPENMP)
-
-if (USE_GRPC)
-    set(EXTRA_LIBS "protobuf pthread grpc++ grpc")
-endif(USE_GRPC)
-
-include_directories("/usr/local/include")
-include_directories("source/include")
-include_directories("source/neutral")
-LINK_DIRECTORIES("/usr/local/lib")
 
 set(SOURCE_FILES
         source/include/data_struct.h
@@ -120,4 +117,9 @@ set(SOURCE_FILES
         source/main/server.cpp)
 
 add_executable(DarkNetServer ${SOURCE_FILES})
-target_link_libraries(DarkNetServer protobuf pthread grpc++ grpc)
+
+if (USE_GRPC)
+    target_link_libraries(DarkNetServer protobuf pthread grpc++ grpc)
+endif(USE_GRPC)
+
+

@@ -1,6 +1,6 @@
 {
-	"SERVERIP":"127.0.0.1",
-	"PORT":"9999",
+	"SERVERIP":"172.17.0.2",
+	"PORT":"9997",
 	"LOGPATH":"/root/repos/darknet/run.log",
 	"GPU":"0",
 	"DARKNET": {
