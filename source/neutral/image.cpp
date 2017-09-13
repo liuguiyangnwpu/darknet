@@ -720,8 +720,6 @@ image letterbox_image(image im, int w, int h)
     image resized = resize_image(im, new_w, new_h);
     image boxed = make_image(w, h, im.c);
     fill_image(boxed, .5);
-    //int i;
-    //for(i = 0; i < boxed.w*boxed.h*boxed.c; ++i) boxed.data[i] = 0;
     embed_image(resized, boxed, (w-new_w)/2, (h-new_h)/2); 
     free_image(resized);
     return boxed;

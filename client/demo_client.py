@@ -39,7 +39,8 @@ def demo_run():
 	stub = create_channel_stub()
 	detectReq = create_request()
 	response = stub.Detect(detectReq)
-	print("Darknet client received: ", response)
+	print("Darknet client received: ")
+	print(response)
 
 
 if __name__ == "__main__":

@@ -61,6 +61,8 @@ void read_config_Json(string fileName, map<string, string> &argvMap) {
     if(root.isMember("DARKNET") == true) {
         argvMap["THRESH"] = root["DARKNET"].get("THRESH", "0.24").asString();
         argvMap["HIER"] = root["DARKNET"].get("HIER", "0.5").asString();
+        argvMap["WIDTH"] = root["DARKNET"].get("WIDTH", "608").asString();
+        argvMap["HEIGHT"] = root["DARKNET"].get("HEIGHT", "608").asString();
         argvMap["LABELPATH"] = root["DARKNET"].get("LABELPATH", "NULL").asString();
         argvMap["CFGPATH"] = root["DARKNET"].get("CFGPATH", "NULL").asString();
         argvMap["WEIGHTPATH"] = root["DARKNET"].get("WEIGHTPATH", "NULL").asString();

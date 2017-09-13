@@ -1,10 +1,17 @@
 #ifndef DARKNET_API
 #define DARKNET_API
 
-#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <map>
+
+#include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
 #include <string.h>
 #include <pthread.h>
+
 #include "data_struct.h"
 #include "list.h"
 #include "utils.h"
@@ -45,5 +52,6 @@ void harmless_update_network_gpu(network net);
 // add by liuguiyang
 void model_start_init(char* labelfile, char* cfgfile, char* weightfile, char **names);
 void detect_single_image(char *filename, float thresh, float hier_thresh, char **names);
+void handle_big_image(char *filename, std::map<std::pair<int, int>, image> &crop_images);
 
 #endif

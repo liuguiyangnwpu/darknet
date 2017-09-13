@@ -7,6 +7,8 @@
 	"DARKNET": {
 		"THRESH":"0.24",
 		"HIER":"0.5",
+		"WIDTH":"608",
+		"HEIGHT":"608",
 		"LABELPATH":"/root/repos/darknet/config/data/jl.names",
 		"CFGPATH":"/root/repos/darknet/config/cfg/jl.cfg",
 		"WEIGHTPATH":"/root/repos/darknet/weights/jl.weights"
