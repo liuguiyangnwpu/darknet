@@ -50,10 +50,12 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
     // detect_single_image(char *filename, float thresh, float hier_thresh, char **names);
     float thresh = stof(g_ConfMap["THRESH"]);
     float hier_thresh = stof(g_ConfMap["HIER"]);
+    double st_time = what_time_is_it_now();
     detect_single_image(strdup(image_path.c_str()), thresh, hier_thresh, names);
+    double ed_time = what_time_is_it_now();
     response->set_status(true);
     response->set_err("");
-    response->set_spend_time(0.0);
+    response->set_spend_time(ed_time - st_time);
     return grpc::Status::OK;
 }
 

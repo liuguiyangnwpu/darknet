@@ -20,7 +20,27 @@ void handle_big_image(char *filename, map<pair<int, int>, image> &crop_images) {
     cout << "width=" << im.w << ", height=" << im.h << endl;
     int crop_width = stoi(g_ConfMap["WIDTH"]);
     int crop_height = stoi(g_ConfMap["HEIGHT"]);
-    cout << "crop_height:" << crop_height << " ,crop_width:" << crop_width << endl;
+    cout << "crop_height:" << crop_height << ", crop_width:" << crop_width << endl;
+    // width=2048, height=1536
+    // crop_height:608, crop_width:608
+    int w_stride = crop_width - 60;
+    int h_stride = crop_height - 60;
+    int w_nums = im.w / w_stride;
+    int h_nums = im.h / h_stride;
+    for(int i=0;i<=h_nums;i++) {
+        int row = i * h_stride;
+        if(row + crop_height >= im.h) {
+            row = im.h - crop_height;
+        }
+        for(int j=0;j<=w_nums;j++) {
+            int col = j * w_stride;
+            if(col + crop_width >= im.w) {
+                col = im.w - crop_width;
+            }
+            image c_img = crop_image(im, col, row, crop_width, crop_height);
+            crop_images[make_pair(col, row)] = c_img;
+        }
+    }
 }
 
 void detect_single_image(char *filename, float thresh, float hier_thresh, char **names) {
