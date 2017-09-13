@@ -7,6 +7,7 @@
 using namespace std;
 
 map<string, string> g_ConfMap;
+char **names = NULL;
 
 void service_start(string &ip, string &port) {
     string log_info = "";
@@ -46,7 +47,10 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
         cerr << image_path << " not found !" << endl;
         Log::Error(image_path + " not found !");
     }
-    
+    // detect_single_image(char *filename, float thresh, float hier_thresh, char **names);
+    float thresh = stof(g_ConfMap["THRESH"]);
+    float hier_thresh = stof(g_ConfMap["HIER"]);
+    detect_single_image(strdup(image_path.c_str()), thresh, hier_thresh, names);
     response->set_status(true);
     response->set_err("");
     response->set_spend_time(0.0);
@@ -90,7 +94,6 @@ int main(int argc, char **argv) {
         return 0;
     }
     // 先 load model
-    char **names = NULL;
     model_start_init(strdup(labelfile.c_str()), strdup(cfgfile.c_str()), strdup(weightfile.c_str()), names);
     // 再启动服务
     string ip = g_ConfMap["SERVERIP"];
