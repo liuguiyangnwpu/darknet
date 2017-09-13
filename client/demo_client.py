@@ -31,7 +31,7 @@ def create_request():
 	return detectReq
 
 def create_channel_stub():
-	channel = grpc.insecure_channel("172.17.0.2:9997")
+	channel = grpc.insecure_channel("10.2.3.241:9997")
 	stub = darknet_pb2_grpc.DetectRpcStub(channel)
 	return stub
 
@@ -39,7 +39,7 @@ def demo_run():
 	stub = create_channel_stub()
 	detectReq = create_request()
 	response = stub.Detect(detectReq)
-	print("Darknet client received: " + response.message)
+	print("Darknet client received: ", response)
 
 
 if __name__ == "__main__":
