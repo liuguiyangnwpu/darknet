@@ -14,7 +14,7 @@
 #include "cuda.h"
 
 
-extern "C" void forward_deconvolutional_layer_gpu(layer l, network net)
+void forward_deconvolutional_layer_gpu(layer l, network net)
 {
     int i;
 
@@ -41,7 +41,7 @@ extern "C" void forward_deconvolutional_layer_gpu(layer l, network net)
     activate_array_gpu(l.output_gpu, l.batch*l.n*l.out_w*l.out_h, l.activation);
 }
 
-extern "C" void backward_deconvolutional_layer_gpu(layer l, network net)
+void backward_deconvolutional_layer_gpu(layer l, network net)
 {
     int i;
 
@@ -83,7 +83,7 @@ extern "C" void backward_deconvolutional_layer_gpu(layer l, network net)
     }
 }
 
-extern "C" void pull_deconvolutional_layer(layer l)
+void pull_deconvolutional_layer(layer l)
 {
     cuda_pull_array(l.weights_gpu, l.weights, l.c*l.n*l.size*l.size);
     cuda_pull_array(l.biases_gpu, l.biases, l.n);
@@ -96,7 +96,7 @@ extern "C" void pull_deconvolutional_layer(layer l)
     }
 }
 
-extern "C" void push_deconvolutional_layer(layer l)
+void push_deconvolutional_layer(layer l)
 {
     cuda_push_array(l.weights_gpu, l.weights, l.c*l.n*l.size*l.size);
     cuda_push_array(l.biases_gpu, l.biases, l.n);

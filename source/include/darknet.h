@@ -28,6 +28,18 @@
 extern int gpu_index;
 
 #ifdef GPU
+    #define BLOCK 512
+
+    #include "cuda_runtime.h"
+    #include "curand.h"
+    #include "cublas_v2.h"
+
+    #ifdef CUDNN
+    #include "cudnn.h"
+    #endif
+#endif
+
+#ifdef GPU
 void axpy_gpu(int N, float ALPHA, float * X, int INCX, float * Y, int INCY);
 void fill_gpu(int N, float ALPHA, float * X, int INCX);
 void scal_gpu(int N, float ALPHA, float * X, int INCX);
