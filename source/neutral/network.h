@@ -13,6 +13,15 @@
 float train_network_datum_gpu(network net);
 float *network_predict_gpu(network net, float *input);
 void pull_network_output(network net);
+
+void forward_network_gpu(network net);
+void backward_network_gpu(network net);
+void update_network_gpu(network net);
+
+float train_networks(network *nets, int n, data d, int interval);
+void sync_nets(network *nets, int n, int interval);
+void harmless_update_network_gpu(network net);
+
 #endif
 
 void compare_networks(network n1, network n2, data d);

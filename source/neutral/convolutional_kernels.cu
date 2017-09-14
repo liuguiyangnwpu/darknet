@@ -156,7 +156,7 @@ __global__ void smooth_kernel(float *x, int n, int w, int h, int c, int size, fl
     }
 }
 
-extern "C" void smooth_layer(layer l, int size, float rate)
+void smooth_layer(layer l, int size, float rate)
 {
     int h = l.out_h;
     int w = l.out_w;

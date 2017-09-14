@@ -51,6 +51,8 @@ void normalize_cpu(float *x, float *mean, float *variance, int batch, int filter
 #include "cuda.h"
 #include "tree.h"
 
+void scal_gpu(int N, float ALPHA, float * X, int INCX);
+void fill_gpu(int n, float alpha, float * x, int incx);
 void axpy_gpu(int N, float ALPHA, float * X, int INCX, float * Y, int INCY);
 void axpy_gpu_offset(int N, float ALPHA, float * X, int OFFX, int INCX, float * Y, int OFFY, int INCY);
 void copy_gpu(int N, float * X, int INCX, float * Y, int INCY);
