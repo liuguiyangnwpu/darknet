@@ -3,11 +3,11 @@
 #include "cublas_v2.h"
 #include <assert.h>
 
-extern "C" {
+
 #include "blas.h"
 #include "cuda.h"
 #include "utils.h"
-}
+
 
 __global__ void scale_bias_kernel(float *output, float *biases, int n, int size)
 {
