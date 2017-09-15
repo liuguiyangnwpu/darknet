@@ -33,3 +33,4 @@ weights/
 bin/
 run.log
 Makefile.bak
+DarknetServerGPU

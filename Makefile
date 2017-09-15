@@ -6,7 +6,7 @@ GRPC=1
 ARCH= -gencode arch=compute_52,code=compute_52
 
 VPATH=./source/neutral/:./source/main:./source/rpc:./source/utils:./source/utils/json
-EXEC=server
+EXEC=DarknetServerGPU
 OBJDIR=./obj/
 
 CC=g++
