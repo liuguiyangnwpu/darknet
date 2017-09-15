@@ -74,7 +74,7 @@ DEPS = $(wildcard source/neutral/*.h) Makefile source/include/*.h source/rpc/*.h
 
 all: obj $(OBJS) $(EXEC)
 
-$(EXEC): $(EXECOBJ)
+$(EXEC): $(EXECOBJ) $(OBJS)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(OBJDIR)%.o: %.cpp $(DEPS)
