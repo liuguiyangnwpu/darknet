@@ -33,12 +33,13 @@ if (USE_GPU)
     set(CUDA_NVCC_FLAGS -lstdc++ -lcudadevrt -Xcompiler -fPIC)
     #set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -O3 -std=c++11")
     #set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_20,code=[sm_20,sm_21]")
-    set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_30,code=sm_30")
-    set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_35,code=sm_35")
-    set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_50,code=[sm_50,compute_50]")
-    set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_52,code=[sm_52,compute_52]")
+    #set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_30,code=sm_30")
+    #set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_35,code=sm_35")
+    #set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_50,code=[sm_50,compute_50]")
+    set(CUDA_NVCC_FLAGS  "${CUDA_NVCC_FLAGS} -gencode arch=compute_52,code=compute_52")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
     set(CUDA_SEPARABLE_COMPILATION ON)
+    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
 endif(USE_GPU)
 
 set(SOURCE_FILES
@@ -118,6 +119,17 @@ set(SOURCE_FILES
         source/neutral/tree.h
         source/neutral/utils.cpp
         source/neutral/utils.h
+        source/neutral/activation_kernels.cu 
+        source/neutral/avgpool_layer_kernels.cu 
+        source/neutral/blas_kernels.cu 
+        source/neutral/col2im_kernels.cu 
+        source/neutral/convolutional_kernels.cu 
+        source/neutral/crop_layer_kernels.cu 
+        source/neutral/deconvolutional_kernels.cu 
+        source/neutral/dropout_layer_kernels.cu 
+        source/neutral/im2col_kernels.cu 
+        source/neutral/maxpool_layer_kernels.cu 
+        source/neutral/network_kernels.cu 
         source/utils/json/json-forwards.h
         source/utils/json/json.h
         source/utils/jsoncpp.cpp
@@ -134,30 +146,15 @@ set(SOURCE_FILES
         source/main/darknet.cpp
         source/main/server.cpp)
 
-set(CUDA_FILES 
-        source/neutral/activation_kernels.cu 
-        source/neutral/avgpool_layer_kernels.cu 
-        source/neutral/blas_kernels.cu 
-        source/neutral/col2im_kernels.cu 
-        source/neutral/convolutional_kernels.cu 
-        source/neutral/crop_layer_kernels.cu 
-        source/neutral/deconvolutional_kernels.cu 
-        source/neutral/dropout_layer_kernels.cu 
-        source/neutral/im2col_kernels.cu 
-        source/neutral/maxpool_layer_kernels.cu 
-        source/neutral/network_kernels.cu)
-
-add_executable(DarkNetServer ${SOURCE_FILES})
 if (USE_GPU)
-    cuda_add_executable(DarkNetServerGPU ${DarkNetServer} ${CUDA_FILES})
+    cuda_add_executable(DarkNetServerGPU ${SOURCE_FILES})
 endif(USE_GPU)
 
 if (USE_GRPC)
     set(GRPC_LIBS protobuf pthread grpc++ grpc)
+    message("${GRPC_LIBS}")
 endif(USE_GRPC)
 
 if (USE_GPU)
     target_link_libraries(DarkNetServerGPU ${CUDA_LIBRARIES} ${GRPC_LIBS})
-elseif (NOT USE_GPU)
-    target_link_libraries(DarkNetServer ${GRPC_LIBS})
 endif(USE_GPU)
