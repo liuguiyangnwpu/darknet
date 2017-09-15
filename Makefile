@@ -5,7 +5,7 @@ GRPC=1
 
 ARCH= -gencode arch=compute_52,code=compute_52
 
-VPATH=./source/neutral/:./source/main:./source/rpc:./source/utils
+VPATH=./source/neutral/:./source/main:./source/rpc:./source/utils:./source/utils/json
 EXEC=server
 OBJDIR=./obj/
 
@@ -42,7 +42,8 @@ OBJ=gemm.o utils.o cuda.o deconvolutional_layer.o convolutional_layer.o \
 	connected_layer.o cost_layer.o parser.o option_list.o detection_layer.o \
 	route_layer.o box.o normalization_layer.o avgpool_layer.o layer.o \
 	local_layer.o shortcut_layer.o activation_layer.o gru_layer.o \
-	batchnorm_layer.o region_layer.o reorg_layer.o tree.o darknet.o server.o
+	batchnorm_layer.o region_layer.o reorg_layer.o tree.o darknet.o \
+	jsoncpp.o lgy_utils.o log.o server.o
 
 # OBJ=$(patsubst %.cpp,%.o,$(wildcard,source/neutral/*.cpp))
 # OBJ+=$(patsubst %.cpp,%.o,$(wildcard,source/main/*.cpp))
