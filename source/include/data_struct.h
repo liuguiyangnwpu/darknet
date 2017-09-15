@@ -5,6 +5,17 @@
 #ifndef DARKNET_DATA_STRUCT_H
 #define DARKNET_DATA_STRUCT_H
 
+#ifdef GPU
+    #define BLOCK 512
+
+    #include "cuda_runtime.h"
+    #include "curand.h"
+    #include "cublas_v2.h"
+
+    #ifdef CUDNN
+    #include "cudnn.h"
+    #endif
+#endif
 typedef struct{
     int classes;
     char **names;

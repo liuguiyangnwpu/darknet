@@ -27,18 +27,6 @@
 #define SECRET_NUM -1234
 extern int gpu_index;
 
-#ifdef GPU
-    #define BLOCK 512
-
-    #include "cuda_runtime.h"
-    #include "curand.h"
-    #include "cublas_v2.h"
-
-    #ifdef CUDNN
-    #include "cudnn.h"
-    #endif
-#endif
-
 // add by liuguiyang
 void model_start_init(char* labelfile, char* cfgfile, char* weightfile, char **names);
 void detect_single_image(char *filename, float thresh, float hier_thresh, char **names);

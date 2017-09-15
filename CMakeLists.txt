@@ -25,6 +25,7 @@ endif(USE_OPENMP)
 
 if (USE_GPU)
     add_definitions(-DGPU)
+    add_definitions(-DCUDNN)
     find_package(CUDA REQUIRED)
     include_directories(/usr/local/cuda/include)
     link_directories(/usr/local/cuda/lib64)
