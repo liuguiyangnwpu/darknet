@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SERVER_H
+#define SERVER_H
 
 #include <iostream>
 #include <string>
@@ -30,3 +31,5 @@ void service_start(string &ip, string &port);
 class DetectRpcImpl final : public DetectRpc::Service {
     grpc::Status Detect(grpc::ServerContext* context, const DetectRequest* request, DetectResponse* response) override;
 };
+
+#endif

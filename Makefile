@@ -80,10 +80,10 @@ $(EXEC): $(EXECOBJ) $(OBJS)
 $(OBJDIR)%.o: %.cpp $(DEPS)
 	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
 
-$(OBJDIR)%.pb.o: %.cpp $(DEPS)
+$(OBJDIR)%.grpc.pb.o: %.grpc.pb.cc $(DEPS)
 	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
-
-$(OBJDIR)%.grpc.pb.o: %.cpp $(DEPS)
+	
+$(OBJDIR)%.pb.o: %.pb.cc $(DEPS)
 	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
 
 $(OBJDIR)%.o: %.cu $(DEPS)
