@@ -44,13 +44,10 @@ void handle_big_image(char *filename, map<pair<int, int>, image> &crop_images) {
     cout << "Crop Images Num is " << crop_images.size() << endl;
 }
 
-void detect_single_image(char *filename, float thresh, float hier_thresh, char **names) {
+void detect_single_image(image im, float thresh, float hier_thresh, char **names) {
     image **alphabet = NULL;
     srand(2222222);
     float nms=.3;
-    map<pair<int, int>, image> crop_images;
-    handle_big_image(filename, crop_images);
-    
     layer l = net.layers[net.n-1];
     box *boxes = (box*)calloc(l.w*l.h*l.n, sizeof(box));
     float **probs = (float**)calloc(l.w*l.h*l.n, sizeof(float *));
@@ -63,23 +60,17 @@ void detect_single_image(char *filename, float thresh, float hier_thresh, char *
             masks[j] = (float*)calloc(l.coords-4, sizeof(float *));
     }
 
-    for(auto iter=crop_images.begin(); iter!=crop_images.end(); iter++) {
-        pair<int, int> start_pos = iter->first;
-        image im = iter->second;
-        image sized = letterbox_image(im, net.w, net.h);
-        float *X = sized.data;
-        double time=what_time_is_it_now();
-        network_predict(net, X);
-        printf("%s: Predicted in %f seconds.\n", filename, what_time_is_it_now()-time);
-        get_region_boxes(l, im.w, im.h, net.w, net.h, thresh, probs, boxes, masks, 0, 0, hier_thresh, 1);
-        if (nms)
-            do_nms_obj(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-        draw_detections(im, l.w*l.h*l.n, thresh, boxes, probs, masks, names, alphabet, l.classes);
-        // save_image(im, "predictions");
-
-        free_image(im);
-        free_image(sized);
-    }
+    image sized = letterbox_image(im, net.w, net.h);
+    float *X = sized.data;
+    double time=what_time_is_it_now();
+    network_predict(net, X);
+    printf("%s: Predicted in %f seconds.\n", filename, what_time_is_it_now()-time);
+    get_region_boxes(l, im.w, im.h, net.w, net.h, thresh, probs, boxes, masks, 0, 0, hier_thresh, 1);
+    if (nms)
+        do_nms_obj(boxes, probs, l.w*l.h*l.n, l.classes, nms);
+    draw_detections(im, l.w*l.h*l.n, thresh, boxes, probs, masks, names, alphabet, l.classes);
+    save_image(im, "predictions");
+    free_image(sized);
     free(boxes);
     free_ptrs((void **)probs, l.w*l.h*l.n);
     if(masks) {

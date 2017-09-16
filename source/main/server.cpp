@@ -51,7 +51,13 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
     float thresh = stof(g_ConfMap["THRESH"]);
     float hier_thresh = stof(g_ConfMap["HIER"]);
     double st_time = what_time_is_it_now();
-    detect_single_image(strdup(image_path.c_str()), thresh, hier_thresh, names);
+    map<pair<int, int>, image> crop_images;
+    handle_big_image(strdup(image_path.c_str()), crop_images);
+    for(auto &iter : crop_images) {
+        image im = iter->second;
+        detect_single_image(im, thresh, hier_thresh, names);
+    }
+    
     double ed_time = what_time_is_it_now();
     response->set_status(true);
     response->set_err("");
