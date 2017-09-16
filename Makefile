@@ -2,6 +2,7 @@ GPU=1
 CUDNN=1
 OPENMP=1
 GRPC=1
+DEBUG=0
 
 ARCH= -gencode arch=compute_52,code=compute_52
 
@@ -17,6 +18,10 @@ OPTS=-Ofast
 LDFLAGS= -std=c++11 -lm -pthread
 COMMON= -Isource/include/ -Isource/neutral/ -Isource/rpc -Isource/utils
 CFLAGS=-Wall -Wno-unknown-pragmas -Wfatal-errors -Wno-write-strings -Wnarrowing -fPIC
+
+ifeq ($(DEBUG), 1) 
+OPTS=-O0 -g
+endif
 
 ifeq ($(OPENMP), 1) 
 CFLAGS+= -fopenmp
