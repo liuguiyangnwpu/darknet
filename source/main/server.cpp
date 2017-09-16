@@ -7,7 +7,6 @@
 using namespace std;
 
 map<string, string> g_ConfMap;
-char **names = NULL;
 
 void service_start(string &ip, string &port) {
     string log_info = "";
@@ -47,7 +46,7 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
         cerr << image_path << " not found !" << endl;
         Log::Error(image_path + " not found !");
     }
-    // detect_single_image(char *filename, float thresh, float hier_thresh, char **names);
+
     float thresh = stof(g_ConfMap["THRESH"]);
     float hier_thresh = stof(g_ConfMap["HIER"]);
     double st_time = what_time_is_it_now();
@@ -56,7 +55,7 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
     for(auto &iter : crop_images) {
         image im = iter.second;
         cout << im.h << "," << im.w << "," << im.c << endl;
-        detect_single_image(im, thresh, hier_thresh, names);
+        detect_single_image(im, thresh, hier_thresh);
         free_image(im);
     }
     
@@ -104,7 +103,7 @@ int main(int argc, char **argv) {
         return 0;
     }
     // 先 load model
-    model_start_init(strdup(labelfile.c_str()), strdup(cfgfile.c_str()), strdup(weightfile.c_str()), names);
+    model_start_init(strdup(labelfile.c_str()), strdup(cfgfile.c_str()), strdup(weightfile.c_str()));
     // 再启动服务
     string ip = g_ConfMap["SERVERIP"];
     string port = g_ConfMap["PORT"];

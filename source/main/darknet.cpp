@@ -6,8 +6,9 @@
 using namespace std;
 
 extern map<string, string> g_ConfMap;
+static char **names = NULL;
 network net;
-void model_start_init(char *labelfile, char* cfgfile, char* weightfile, char **names) {
+void model_start_init(char *labelfile, char* cfgfile, char* weightfile) {
     names = get_labels(labelfile);
     net = parse_network_cfg(cfgfile);
     load_weights(&net, weightfile);
@@ -44,7 +45,7 @@ void handle_big_image(char *filename, map<pair<int, int>, image> &crop_images) {
     cout << "Crop Images Num is " << crop_images.size() << endl;
 }
 
-void detect_single_image(image im, float thresh, float hier_thresh, char **names) {
+void detect_single_image(image im, float thresh, float hier_thresh) {
     srand(2222222);
     float nms=.3;
     layer l = net.layers[net.n-1];
