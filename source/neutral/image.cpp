@@ -181,21 +181,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
     for(i = 0; i < num; ++i){
         int class_idx = max_index(probs[i], classes);
         float prob = probs[i][class_idx];
-        if(prob > thresh){
-            int width = im.h * .006;
-
-            printf("%s: %.0f%%\n", names[class_idx], prob*100);
-            int offset = class_idx*123457 % classes;
-            float red = get_color(2,offset,classes);
-            float green = get_color(1,offset,classes);
-            float blue = get_color(0,offset,classes);
-            float rgb[3];
-
-            //width = prob*20+2;
-
-            rgb[0] = red;
-            rgb[1] = green;
-            rgb[2] = blue;
+        if(prob > thresh) {
             box b = boxes[i];
 
             int left  = (b.x-b.w/2.)*im.w;
@@ -208,8 +194,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             if(top < 0) top = 0;
             if(bot > im.h-1) bot = im.h-1;
 
-            std::cout << "(left, top, right, bot) = " << "(" << left << "," << top << "," << right << "," << bot << ")" << std::endl;
-            // draw_box_width(im, left, top, right, bot, width, red, green, blue);
+            std::cout << names[class_idx] << ": " << prob*100 <<  "(left, top, right, bot) = " << "(" << left << "," << top << "," << right << "," << bot << ")" << std::endl;
         }
     }
 }
