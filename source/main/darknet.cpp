@@ -68,8 +68,8 @@ void detect_single_image(image im, float thresh, float hier_thresh, char **names
     get_region_boxes(l, im.w, im.h, net.w, net.h, thresh, probs, boxes, masks, 0, 0, hier_thresh, 1);
     if (nms)
         do_nms_obj(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-    draw_detections(im, l.w*l.h*l.n, thresh, boxes, probs, masks, names, alphabet, l.classes);
-    save_image(im, "predictions");
+    //draw_detections(im, l.w*l.h*l.n, thresh, boxes, probs, masks, names, alphabet, l.classes);
+    //save_image(im, "predictions");
     free_image(sized);
     free(boxes);
     free_ptrs((void **)probs, l.w*l.h*l.n);
