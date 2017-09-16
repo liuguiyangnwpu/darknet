@@ -57,6 +57,7 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
         image im = iter.second;
         cout << im.h << "," << im.w << "," << im.c << endl;
         detect_single_image(im, thresh, hier_thresh, names);
+        free(im);
     }
     
     double ed_time = what_time_is_it_now();

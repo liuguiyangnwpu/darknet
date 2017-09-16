@@ -174,23 +174,7 @@ void draw_bbox(image a, box bbox, int w, float r, float g, float b)
     }
 }
 
-image **load_alphabet()
-{
-    int i, j;
-    const int nsize = 8;
-    image **alphabets = (image**)calloc(nsize, sizeof(image));
-    for(j = 0; j < nsize; ++j){
-        alphabets[j] = (image*)calloc(128, sizeof(image));
-        for(i = 32; i < 127; ++i){
-            char buff[256];
-            sprintf(buff, "data/labels/%d_%d.png", i, j);
-            alphabets[j][i] = load_image_color(buff, 0, 0);
-        }
-    }
-    return alphabets;
-}
-
-void draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, image **alphabet, int classes)
+void draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, int classes)
 {
     int i;
 
@@ -200,12 +184,6 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
         if(prob > thresh){
             int width = im.h * .006;
 
-            if(0) {
-                width = pow(prob, 1./2.)*10+1;
-                alphabet = 0;
-            }
-
-            //printf("%d %s: %.0f%%\n", i, names[class], prob*100);
             printf("%s: %.0f%%\n", names[class_idx], prob*100);
             int offset = class_idx*123457 % classes;
             float red = get_color(2,offset,classes);
@@ -230,21 +208,8 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             if(top < 0) top = 0;
             if(bot > im.h-1) bot = im.h-1;
 
-            draw_box_width(im, left, top, right, bot, width, red, green, blue);
-            if (alphabet) {
-                image label = get_label(alphabet, names[class_idx], (im.h*.03)/10);
-                draw_label(im, top + width, left, label, rgb);
-                free_image(label);
-            }
-            if (masks) {
-                image mask = float_to_image(14, 14, 1, masks[i]);
-                image resized_mask = resize_image(mask, b.w*im.w, b.h*im.h);
-                image tmask = threshold_image(resized_mask, .5);
-                embed_image(tmask, im, left, top);
-                free_image(mask);
-                free_image(resized_mask);
-                free_image(tmask);
-            }
+            std::cout << "(left, top, right, bot) = " << "(" << left << "," << top << "," << right << "," << bot << ")" << std::endl;
+            // draw_box_width(im, left, top, right, bot, width, red, green, blue);
         }
     }
 }
