@@ -1,6 +1,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <vector>
 #include <stdlib.h>
 #include <stdio.h>
 #include <float.h>
@@ -78,7 +79,7 @@ void show_image(image p, const char *name);
 image copy_image(image p);
 void draw_box_width(image a, int x1, int y1, int x2, int y2, int w, float r, float g, float b);
 void free_image(image m);
-vector<box_label_message> draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, int classes);
+std::vector<box_label_message> draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, int classes);
 void constrain_image(image im);
 void flip_image(image a);
 image float_to_image(int w, int h, int c, float *data);

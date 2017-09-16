@@ -174,9 +174,9 @@ void draw_bbox(image a, box bbox, int w, float r, float g, float b)
     }
 }
 
-vector<box_label_message> draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, int classes)
+std::vector<box_label_message> draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, int classes)
 {
-    vector<box_label_message> res_messages;
+    std::vector<box_label_message> res_messages;
     for(int i = 0; i < num; ++i) {
         int class_idx = max_index(probs[i], classes);
         float prob = probs[i][class_idx];
@@ -195,7 +195,7 @@ vector<box_label_message> draw_detections(image im, int num, float thresh, box *
 
             // std::cout << names[class_idx] << ": " << prob*100 <<  "(left, top, right, bot) = " << "(" << left << "," << top << "," << right << "," << bot << ")" << std::endl;
             box_label_message tmp;
-            tmp.label_name = string(names[class_idx]);
+            tmp.label_name = std::string(names[class_idx]);
             tmp.prob = prob;
             tmp.left = left;
             tmp.right = right;

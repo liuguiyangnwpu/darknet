@@ -5,6 +5,8 @@
 #ifndef DARKNET_DATA_STRUCT_H
 #define DARKNET_DATA_STRUCT_H
 
+#include <string>
+
 #ifdef GPU
     #define BLOCK 512
 
@@ -550,7 +552,7 @@ typedef struct list{
 } list;
 
 typedef struct {
-    string label_name;
+    std::string label_name;
     float prob;
     int left, right, top, bottom;
 } box_label_message;
