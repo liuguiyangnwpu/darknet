@@ -53,9 +53,23 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
     map<pair<int, int>, image> crop_images;
     handle_big_image(strdup(image_path.c_str()), crop_images);
     for(auto &iter : crop_images) {
+        auto crop_coord = iter.first; // row, col
         image im = iter.second;
         cout << im.h << "," << im.w << "," << im.c << endl;
-        detect_single_image(im, thresh, hier_thresh);
+        vector<box_label_message> res_messages;
+        res_messages.clear();
+        detect_single_image(im, thresh, hier_thresh, res_messages);
+        for(size_t i=0; i<res_messages.size(); i++) {
+            box_label_message res_box_info = res_messages[i];
+            TargetRect *ptr_target = NULL;
+            ptr_target = response->add_targetlist();
+            ptr_target->set_label(res_box_info.label_name);
+            ptr_target->set_prob(res_box_info.prob);
+            ptr_target->set_x_min(crop_coord.second + res_box_info.left);
+            ptr_target->set_y_min(crop_coord.first + res_box_info.top);
+            ptr_target->set_x_max(crop_coord.second + res_box_info.right);
+            ptr_target->set_y_max(crop_coord.first + res_box_info.bottom);
+        }
         free_image(im);
     }
     

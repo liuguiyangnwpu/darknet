@@ -174,11 +174,10 @@ void draw_bbox(image a, box bbox, int w, float r, float g, float b)
     }
 }
 
-void draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, int classes)
+vector<box_label_message> draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, int classes)
 {
-    int i;
-
-    for(i = 0; i < num; ++i){
+    vector<box_label_message> res_messages;
+    for(int i = 0; i < num; ++i) {
         int class_idx = max_index(probs[i], classes);
         float prob = probs[i][class_idx];
         if(prob > thresh) {
@@ -194,9 +193,18 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             if(top < 0) top = 0;
             if(bot > im.h-1) bot = im.h-1;
 
-            std::cout << names[class_idx] << ": " << prob*100 <<  "(left, top, right, bot) = " << "(" << left << "," << top << "," << right << "," << bot << ")" << std::endl;
+            // std::cout << names[class_idx] << ": " << prob*100 <<  "(left, top, right, bot) = " << "(" << left << "," << top << "," << right << "," << bot << ")" << std::endl;
+            box_label_message tmp;
+            tmp.label_name = string(names[class_idx]);
+            tmp.prob = prob;
+            tmp.left = left;
+            tmp.right = right;
+            tmp.top = top;
+            tmp.bottom = bot;
+            res_messages.push_back(tmp);
         }
     }
+    return res_messages;
 }
 
 void transpose_image(image im)

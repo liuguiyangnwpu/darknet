@@ -30,6 +30,6 @@ extern int gpu_index;
 // add by liuguiyang
 void model_start_init(char* labelfile, char* cfgfile, char* weightfile);
 void handle_big_image(char *filename, std::map<std::pair<int, int>, image> &crop_images);
-void detect_single_image(image im, float thresh, float hier_thresh);
+void detect_single_image(image im, float thresh, float hier_thresh, vector<box_label_message> &res_messages);
 
 #endif

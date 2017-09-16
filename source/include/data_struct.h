@@ -16,6 +16,7 @@
     #include "cudnn.h"
     #endif
 #endif
+
 typedef struct{
     int classes;
     char **names;
@@ -547,5 +548,11 @@ typedef struct list{
     node *front;
     node *back;
 } list;
+
+typedef struct {
+    string label_name;
+    float prob;
+    int left, right, top, bottom;
+} box_label_message;
 
 #endif //DARKNET_DATA_STRUCT_H

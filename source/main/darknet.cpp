@@ -8,6 +8,7 @@ using namespace std;
 extern map<string, string> g_ConfMap;
 static char **names = NULL;
 network net;
+
 void model_start_init(char *labelfile, char* cfgfile, char* weightfile) {
     names = get_labels(labelfile);
     net = parse_network_cfg(cfgfile);
@@ -45,7 +46,7 @@ void handle_big_image(char *filename, map<pair<int, int>, image> &crop_images) {
     cout << "Crop Images Num is " << crop_images.size() << endl;
 }
 
-void detect_single_image(image im, float thresh, float hier_thresh) {
+void detect_single_image(image im, float thresh, float hier_thresh, vector<box_label_message> &res_messages) {
     srand(2222222);
     float nms=.3;
     layer l = net.layers[net.n-1];
@@ -68,7 +69,7 @@ void detect_single_image(image im, float thresh, float hier_thresh) {
     get_region_boxes(l, im.w, im.h, net.w, net.h, thresh, probs, boxes, masks, 0, 0, hier_thresh, 1);
     if (nms)
         do_nms_obj(boxes, probs, l.w*l.h*l.n, l.classes, nms);
-    draw_detections(im, l.w*l.h*l.n, thresh, boxes, probs, masks, names, l.classes);
+    res_messages = draw_detections(im, l.w*l.h*l.n, thresh, boxes, probs, masks, names, l.classes);
     save_image(im, "predictions");
     free_image(sized);
     free(boxes);
