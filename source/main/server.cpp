@@ -54,7 +54,8 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
     map<pair<int, int>, image> crop_images;
     handle_big_image(strdup(image_path.c_str()), crop_images);
     for(auto &iter : crop_images) {
-        image im = iter->second;
+        image im = iter.second;
+        cout << im.h << "," << im.w << "," << im.c << endl;
         detect_single_image(im, thresh, hier_thresh, names);
     }
     
