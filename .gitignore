@@ -34,3 +34,5 @@ bin/
 run.log
 Makefile.bak
 DarknetServerGPU
+.tags
+.tags_sorted_by_file

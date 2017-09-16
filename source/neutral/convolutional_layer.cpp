@@ -168,6 +168,7 @@ convolutional_layer make_convolutional_layer(int batch, int h, int w, int c, int
     int i;
     // convolutional_layer l = {0};
     convolutional_layer l;
+    memset(&l, 0, sizeof(convolutional_layer));
     l.type = CONVOLUTIONAL;
 
     l.h = h;

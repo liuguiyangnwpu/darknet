@@ -28,6 +28,7 @@ local_layer make_local_layer(int batch, int h, int w, int c, int n, int size, in
     int i;
     // local_layer l = {0};
     local_layer l;
+    memset(&l, 0, sizeof(local_layer));
     l.type = LOCAL;
 
     l.h = h;

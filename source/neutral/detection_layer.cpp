@@ -15,6 +15,7 @@ detection_layer make_detection_layer(int batch, int inputs, int n, int side, int
 {
     // detection_layer l = {0};
     detection_layer l;
+    memset(&l, 0, sizeof(detection_layer));
     l.type = DETECTION;
 
     l.n = n;

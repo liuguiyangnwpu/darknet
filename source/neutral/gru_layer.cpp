@@ -32,6 +32,7 @@ layer make_gru_layer(int batch, int inputs, int outputs, int steps, int batch_no
     batch = batch / steps;
     // layer l = {0};
     layer l;
+    memset(&l, 0, sizeof(layer));
     l.batch = batch;
     l.type = GRU;
     l.steps = steps;

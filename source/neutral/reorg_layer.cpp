@@ -9,6 +9,7 @@ layer make_reorg_layer(int batch, int w, int h, int c, int stride, int reverse, 
 {
     // layer l = {0};
     layer l;
+    memset(&l, 0, sizeof(layer));
     l.type = REORG;
     l.batch = batch;
     l.stride = stride;

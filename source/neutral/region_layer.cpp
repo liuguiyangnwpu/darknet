@@ -14,6 +14,7 @@ layer make_region_layer(int batch, int w, int h, int n, int classes, int coords)
 {
     // layer l = {0};
     layer l;
+    memset(&l, 0, sizeof(layer));
     l.type = REGION;
 
     l.n = n;
