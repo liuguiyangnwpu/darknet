@@ -53,7 +53,7 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
     map<pair<int, int>, image> crop_images;
     handle_big_image(strdup(image_path.c_str()), crop_images);
     for(auto &iter : crop_images) {
-        auto crop_coord = iter.first; // row, col
+        auto crop_coord = iter.first; // col, row
         image im = iter.second;
         cout << im.h << "," << im.w << "," << im.c << endl;
         vector<box_label_message> res_messages;
@@ -65,10 +65,10 @@ grpc::Status DetectRpcImpl::Detect(grpc::ServerContext* context, const DetectReq
             ptr_target = response->add_targetlist();
             ptr_target->set_label(res_box_info.label_name);
             ptr_target->set_prob(res_box_info.prob);
-            ptr_target->set_x_min(crop_coord.second + res_box_info.left);
-            ptr_target->set_y_min(crop_coord.first + res_box_info.top);
-            ptr_target->set_x_max(crop_coord.second + res_box_info.right);
-            ptr_target->set_y_max(crop_coord.first + res_box_info.bottom);
+            ptr_target->set_x_min(crop_coord.first + res_box_info.left);
+            ptr_target->set_y_min(crop_coord.second + res_box_info.top);
+            ptr_target->set_x_max(crop_coord.first + res_box_info.right);
+            ptr_target->set_y_max(crop_coord.second + res_box_info.bottom);
         }
         free_image(im);
     }

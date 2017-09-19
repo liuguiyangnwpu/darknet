@@ -11,11 +11,27 @@ from __future__ import print_function
 import time
 import hashlib
 
+import cv2
 import grpc
 
 from rpc import darknet_pb2
 from rpc import darknet_pb2_grpc
 
+
+dir_prefix = "/Volumes/projects/第三方数据下载/JL1ST/"
+
+def show_detect_result(rpc_request, rpc_response):
+	src_image_path = dir_prefix + "SRC_" + rpc_request.video_name + "/" + rpc_request.frame_name
+	print(src_image_path)
+	src_img = cv2.imread(src_image_path)
+	for target in rpc_response.targetlist:
+		src_img = cv2.rectangle(src_img, 
+			(target.y_min, target.x_min), (target.y_max, target.x_max), 
+			(0, 255, 0))
+		src_img = cv2.putText(src_img, "%s %.2f" % (target.label, target.prob), 
+			(target.x_min, target.y_min), 0, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+	cv2.imshow(rpc_request.video_name, src_img)
+	cv2.waitKey()
 
 def create_request():
 	video_name = "JL101B_MSS_20160904180811_000013363_101_001_L1B_MSS"
@@ -39,8 +55,8 @@ def demo_run():
 	stub = create_channel_stub()
 	detectReq = create_request()
 	response = stub.Detect(detectReq)
-	print("Darknet client received: ")
-	print(response)
+	cv2.namedWindow(detectReq.video_name, cv2.WINDOW_NORMAL)
+	show_detect_result(detectReq, response)
 
 
 if __name__ == "__main__":
